@@ -16,15 +16,20 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "serve": "^13.0.2",
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
   },
-  "engines": { "npm": "6.x", "node": "12.x" },
+  "engines": {
+    "npm": "6.x",
+    "node": "12.x"
+  },
   "scripts": {
     "start": "set PORT=3002 &&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": [
