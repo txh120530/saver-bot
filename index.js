@@ -48,7 +48,7 @@ const slackEvents = createEventAdapter(slackSigningSecret);
 const slackClient = new WebClient(slackToken);
 
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 
 slackEvents.on('app_mention', (event) => {
@@ -168,7 +168,7 @@ catch (error) {
   });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'client/build/index.html'));
+  res.sendFile(path.join(__dirname+'build/index.html'));
 });
 
 
