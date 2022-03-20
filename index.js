@@ -48,8 +48,14 @@ const slackEvents = createEventAdapter(slackSigningSecret);
 const slackClient = new WebClient(slackToken);
 
 
-app.use(express.static(path.join(__dirname, 'app/client/build')));
+  // Exprees will serve up production assets
+  app.use(express.static('client/build'));
 
+  // Express serve up index.html file if it doesn't recognize route
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 
 slackEvents.on('app_mention', (event) => {
   console.log(`Got message from user ${event.user}: ${event.text}`);
@@ -167,9 +173,6 @@ catch (error) {
     res.json(res.paginatedResults);
   });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'app/client/build/index.html'));
-});
 
 
   
