@@ -48,10 +48,10 @@ const slackEvents = createEventAdapter(slackSigningSecret);
 const slackClient = new WebClient(slackToken);
 
 
-app.use(express.static(path.resolve(__dirname, "build")));
+app.use(express.static(path.resolve(__dirname, "/client/build")));
 // Step 2:
 app.get("*", function (request, response) {
-  response.sendFile(path.resolve(__dirname, "build", "index.html"));
+  response.sendFile(path.resolve(__dirname, "/client/build", "index.html"));
 });
 
 
