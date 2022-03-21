@@ -32,7 +32,7 @@ const mySqlDatabase = process.env.SQL_DATABASE;
 
 
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: mySqlHost,
   user: mySqlUser,
   password: mySqlPass,
@@ -58,7 +58,7 @@ function handleDisconnect() {
     });                                             // process asynchronous requests in the meantime.
                                                     // If you're also serving http, display a 503 error.
 
-    db.on('  Database Error', function(err) {
+    db.on('Database Error', function(err) {
         console.log('db error: ' + err.code, err);
         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
             handleDisconnect();                       // lost due to either server restart, or a
@@ -68,6 +68,7 @@ function handleDisconnect() {
     });
 
 }
+handleDisconnect();
 
 
 
@@ -98,6 +99,7 @@ function handleDisconnect() {
         if (error){
           console.log("ERROR!!! ", error);
           throw error;
+          handleDisconnect();
         } 
         numRows = dbresults[0].numRows;
         numPages = Math.ceil(numRows / limit) -1;
@@ -107,6 +109,7 @@ function handleDisconnect() {
         if (error){
           console.log("ERROR!!! ", page, limit);
           throw error;
+          handleDisconnect();
         } 
         const unpaginatedResults = JSON.stringify(dbresults);  
         console.log("Length: ", dbresults.length);   
@@ -141,7 +144,7 @@ function handleDisconnect() {
     db.connect(function(err) {
             if(err) {
                 console.log('Connection is asleep (time to wake it up): ', err);
-                setTimeout(handleDisconnect, 1000);
+                handleDisconnect();
             }
             });
     res.json(res.paginatedResults);
@@ -153,7 +156,8 @@ app.use(express.static(path.join(__dirname, './client/build')))
 app.get('*', function(_, res) {
   res.sendFile(path.join(__dirname, './client/build/index.html'), function(err) {
     if (err) {
-      res.status(500).send(err)
+      res.status(500).send(err);
+      handleDisconnect();
     }
   })
 })
