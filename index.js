@@ -42,8 +42,7 @@ const db = mysql.createPool({
 // db.connect();
 
 
-  // Exprees will serve up production assets
-  app.use(express.static('client/build'));
+
 
 
 
@@ -143,6 +142,9 @@ function handleDisconnect() {
     res.json(res.paginatedResults);
   });
 
+
+  // Exprees will serve up production assets
+  app.use(express.static('client/build'));
 
   // Express serve up index.html file if it doesn't recognize route
   app.get('*', (req, res) => {
