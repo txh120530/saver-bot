@@ -39,7 +39,7 @@ const db = mysql.createConnection({
   database: mySqlDatabase
 })
 
-// db.connect();
+db.connect();
 
 
 
