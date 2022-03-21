@@ -95,6 +95,10 @@ function handleDisconnect() {
       }
 
       db.query('SELECT count(*) as numRows FROM saved_comments', function (error, dbresults) {
+        if (error){
+          console.log("ERROR!!! ", error);
+          throw error;
+        } 
         numRows = dbresults[0].numRows;
         numPages = Math.ceil(numRows / limit) -1;
       });
