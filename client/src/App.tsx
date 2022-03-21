@@ -95,6 +95,7 @@ function App() {
       let res = await axios.get(queryString)
       console.log("Query: ", queryString);
       let data = res.data;
+      console.log("Res: ", res);
       setSavedComments(data);
       setLoading(false);
     }
