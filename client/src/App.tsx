@@ -87,15 +87,14 @@ function App() {
       setLoading(true);
       let queryString = '';
       if(sortItem !== ''){
-        queryString =`/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}`;
+        queryString =`http://localhost:4000/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}`;
       }
       else{
-        queryString = `/comments?page=${page}&limit=${limit}`;        
+        queryString = `http://localhost:4000/comments?page=${page}&limit=${limit}`;        
       }
       let res = await axios.get(queryString)
       console.log("Query: ", queryString);
       let data = res.data;
-            console.log("Res: ",res);
       setSavedComments(data);
       setLoading(false);
     }
