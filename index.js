@@ -32,7 +32,7 @@ const mySqlDatabase = process.env.SQL_DATABASE;
 
 
 
-const db = mysql.createPool({
+const db = mysql.createConnection({
   host: mySqlHost,
   user: mySqlUser,
   password: mySqlPass,
