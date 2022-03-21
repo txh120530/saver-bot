@@ -7,14 +7,7 @@ import Comment from './components/Comment'
 
 import dotenv from 'dotenv';
 
-const configs = {
-  development: {
-    SERVER_URI: 'localhost:5000',
-  },
-  production: {
-    SERVER_URI: 'HEROKU_URI',
-  },
-};
+const url = process.env.REACT_APP_API_URL;
 
 type Next = {
   page: number;
@@ -94,10 +87,10 @@ function App() {
       setLoading(true);
       let queryString = '';
       if(sortItem !== ''){
-        queryString =`${config.SERVER_URI}/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}`;
+        queryString =`http://localhost:5000/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}`;
       }
       else{
-        queryString = `${config.SERVER_URI}/comments?page=${page}&limit=${limit}`;        
+        queryString = `http://localhost:5000/comments?page=${page}&limit=${limit}`;        
       }
       let res = await axios.get(queryString)
       console.log("Query: ", queryString);
