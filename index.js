@@ -145,13 +145,6 @@ handleDisconnect();
 
 
   app.get('/comments', paginatedResults(), (req, res) => {
-
-    db.connect(function(err) {
-            if(err) {
-                console.log('Connection is asleep (time to wake it up): ', err);
-                handleDisconnect();
-            }
-            });
     res.json(res.paginatedResults);
   });
 
