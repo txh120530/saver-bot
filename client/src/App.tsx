@@ -87,10 +87,10 @@ function App() {
       setLoading(true);
       let queryString = '';
       if(sortItem !== ''){
-        queryString =`/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}`;
+        queryString =`${url}/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}`;
       }
       else{
-        queryString = `/comments?page=${page}&limit=${limit}`;        
+        queryString = `${url}/comments?page=${page}&limit=${limit}`;        
       }
       let res = await axios.get(queryString)
       console.log("Query: ", queryString);
