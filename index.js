@@ -31,15 +31,15 @@ const mySqlPass = process.env.SQL_PASSWORD;
 const mySqlDatabase = process.env.SQL_DATABASE;
 
 
-
-const db = mysql.createConnection({
+const db_configt = {
   host: mySqlHost,
   user: mySqlUser,
   password: mySqlPass,
   database: mySqlDatabase
-})
+}
 
-db.connect();
+
+let db;
 
 
 
@@ -74,6 +74,7 @@ function handleDisconnect() {
 
 }
 
+handleDisconnect();
 
 
 
