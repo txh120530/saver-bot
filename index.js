@@ -31,14 +31,14 @@ const mySqlDatabase = process.env.SQL_DATABASE;
 
 
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: mySqlHost,
   user: mySqlUser,
   password: mySqlPass,
   database: mySqlDatabase
 })
 
-db.connect();
+// db.connect();
 
 
   // Exprees will serve up production assets
