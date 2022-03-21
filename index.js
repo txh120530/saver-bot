@@ -48,7 +48,12 @@ db.connect();
 
 function handleDisconnect() {
     console.log('handleDisconnect()');
-    db = mysql.createConnection(); // Recreate the connection, since
+    db = mysql.createConnection({
+  host: mySqlHost,
+  user: mySqlUser,
+  password: mySqlPass,
+  database: mySqlDatabase
+}); // Recreate the connection, since
                                                     // the old one cannot be reused.
     db.connect(function(err) {              // The server is either down
     if(err) {                                      // or restarting (takes a while sometimes).
