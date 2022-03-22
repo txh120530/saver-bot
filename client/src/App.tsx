@@ -7,7 +7,7 @@ import Comment from './components/Comment'
 
 import dotenv from 'dotenv';
 
-const url = process.env.REACT_APP_API_URL;
+const url = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
 type Next = {
   page: number;
@@ -105,48 +105,61 @@ function App() {
 
   return (
     <div className="App">
-      <header>
-        SaverBot Collection
+      <header className="text-center bg-gray-200 lg:fixed top-0 right-0 left-0 shadow p-2 bg-white">
+        <h2>SaverBot Collection</h2>
+
+
+        <div className="controls flex p-3 justify-between items-center">
+
+        <div className="border">
+          <select onChange={handleLimit}>
+          <option value="5">Number of Results</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          </select>
+        </div>
+
+        <div className="flex">
+            Sort Criteria:
+            <div>
+            <span className="border inline-block mx-2">
+              <select onChange={handleSortTerm}>
+                <option value="null">None</option>
+                <option value="date">Date</option>
+                <option value="user">Username</option>
+              </select>
+            </span>
+          <span>in</span>
+            <span className="border inline-block mx-2">
+              <select onChange={handleSortDir}>
+                <option value="ASC">Ascending</option>
+                <option value="DESC">Descending</option>
+              </select>
+            </span>
+            <span>order</span>
+          </div>
+
+        </div>
+
+        </div>
       </header>
 
-      <select onChange={handleLimit}>
-        <option value="5">Number of Results</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-      </select>
-
-      <div>
-      Sort Criteria<br />
-
-      <select onChange={handleSortTerm}>
-        <option value="null">None</option>
-        <option value="date">Date</option>
-        <option value="user">Username</option>
-      </select>
-
-      in
-
-      <select onChange={handleSortDir}>
-        <option value="ASC">Ascending</option>
-        <option value="DESC">Descending</option>
-      </select>
-
-      order
-
-      </div>
 
 
+
+
+        <main className="pt-8 lg:pt-32 max-w-3xl mx-auto">
 
       { loading === true ? null : Object.entries(JSON.parse(savedComments.results)).map((d:Array<any>, i) => {
         return <Comment key={d[1].id} id={d[1].id} comment={d[1].comment} timestamp={d[1].date} user={d[1].user}/>;
       })
       }
 
-      {savedComments.previous ? <button  onClick={handlePrevClick}>Prev</button> : null}
-      {savedComments.next ? <button onClick={handleNextClick}>Next</button> : null}
-      
+      <div className="bottom-controls flex justify-between">{savedComments.previous ? <button  onClick={handlePrevClick}>Prev</button> : null}
+            {savedComments.next ? <button onClick={handleNextClick}>Next</button> : null}</div>
+      </main>
 
 
 

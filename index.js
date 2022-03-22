@@ -31,7 +31,7 @@ const mySqlPass = process.env.SQL_PASSWORD;
 const mySqlDatabase = process.env.SQL_DATABASE;
 
 
-const db_configt = {
+const db_config = {
   host: mySqlHost,
   user: mySqlUser,
   password: mySqlPass,
@@ -48,12 +48,7 @@ let db;
 
 function handleDisconnect() {
     console.log('handleDisconnect()');
-    db = mysql.createConnection({
-  host: mySqlHost,
-  user: mySqlUser,
-  password: mySqlPass,
-  database: mySqlDatabase
-}); // Recreate the connection, since
+    db = mysql.createConnection(db_config); // Recreate the connection, since
                                                     // the old one cannot be reused.
     db.connect(function(err) {              // The server is either down
     if(err) {                                      // or restarting (takes a while sometimes).
