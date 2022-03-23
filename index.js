@@ -95,8 +95,8 @@ handleDisconnect();
 
 
       if(search){
-        queryString = queryString.concat(` WHERE Match(comment, user) AGAINST('${search}')`)
-        queryLimitString = queryLimitString.concat(` WHERE Match(comment, user) AGAINST('${search}')`);
+        queryString = queryString.concat(` WHERE comment LIKE '%${search}%' OR user LIKE '%${search}%'`)
+        queryLimitString = queryLimitString.concat(` WHERE comment LIKE '%${search}%' OR user LIKE '%${search}%'`);
       }
       if(sort){
         queryString = queryString.concat(` ORDER BY ${sort} ${sortDir}`)
