@@ -105,7 +105,7 @@ function App() {
     const makeGetRequest = async () => {
       setLoading(true);
       let queryString = '';
-        queryString = `http://localhost:5001/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}&search=${searchValue}`;        
+        queryString = `/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}&search=${searchValue}`;        
       let res = await axios.get(queryString)
       console.log("Query: ", queryString);
       let data = res.data;
