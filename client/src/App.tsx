@@ -89,6 +89,12 @@ function App() {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearch = event.target.value.toString();
     setQuery(newSearch);
+    setPage(0);
+  }
+
+  const handleNameSearch = (value: string) => {
+    setQuery(value);
+    setPage(0);
   }
 
   useEffect(() => {
@@ -172,7 +178,7 @@ function App() {
 
 
       { loading === true ? null : Object.entries(JSON.parse(savedComments.results)).map((d:Array<any>, i) => {
-        return <Comment key={d[1].id} id={d[1].id} comment={d[1].comment} timestamp={d[1].date} user={d[1].user}/>;
+        return <Comment handleNameClick={handleNameSearch} key={d[1].id} id={d[1].id} comment={d[1].comment} timestamp={d[1].date} user={d[1].user}/>;
       })
       }
 

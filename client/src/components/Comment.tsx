@@ -4,19 +4,27 @@ interface CommentInter {
 	id: number,
 	comment?: string,
 	user?: string,
-	timestamp?: string
+	timestamp?: string,
+	handleNameClick: (arg0:string) => void
 }
 
-const Comment = ({ id, comment, user, timestamp }:CommentInter) => {
+
+
+const Comment = ({ id, comment, user, timestamp, handleNameClick }:CommentInter) => {
 	let formattedDate = '';
 	if(typeof timestamp === 'string'){
 		formattedDate = new Date(timestamp.toString()).toLocaleString()
 	}
 
+
+	const onClickHandler = (user:string = '') => {
+		handleNameClick(user);
+	}
+
     return (
         <div className="comment-card  border my-3">
           <div className="card-top block md:flex justify-between bg-gray-100 border-b-2 p-3">
-              <span className="name">
+              <span className="name cursor-pointer hover:text-blue-900" onClick={() => onClickHandler(user)}>
                 {user}  
               </span>
 
