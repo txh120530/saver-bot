@@ -79,23 +79,33 @@ handleDisconnect();
       const limit = parseInt(req.query.limit);
 
       const sort = req.query.sortTerm;
-      console.log("Sort: ", sort);
       const sortDir = req.query.sortDir;
+
+      const search = req.query.search;
+
+      console.log("Search: ", search);
 
       const startIndex = (page) * limit;
       const endIndex = page * limit;
       console.log("End Index: ", endIndex);
 
       const results = {}
-      let queryString = '';
+      let queryString = `SELECT* FROM saved_comments`;
+      let queryLimitString = 'SELECT count(*) as numRows FROM saved_comments';
 
-      if(!sort){
-        queryString = `SELECT* FROM saved_comments LIMIT ${page*limit},${limit};`
-      } else {
-        queryString =  `SELECT* FROM saved_comments ORDER BY ${sort} ${sortDir} LIMIT ${page*limit},${limit};`
+
+      if(search){
+        queryString = queryString.concat(` WHERE Match(comment, user) AGAINST('${search}')`)
+        queryLimitString = queryLimitString.concat(` WHERE Match(comment, user) AGAINST('${search}')`);
       }
+      if(sort){
+        queryString = queryString.concat(` ORDER BY ${sort} ${sortDir}`)
+      }
+      queryString = queryString.concat(` LIMIT ${page*limit},${limit}`)
 
-      db.query('SELECT count(*) as numRows FROM saved_comments', function (error, dbresults) {
+      console.log(queryString);
+
+      db.query(queryLimitString, function (error, dbresults) {
         if (error){
           console.log("ERROR!!! ", error);
           throw error;
@@ -112,7 +122,9 @@ handleDisconnect();
           handleDisconnect();
         } 
         const unpaginatedResults = JSON.stringify(dbresults);  
-        console.log("Length: ", dbresults.length);   
+        
+        console.log("Page: ", page);
+        console.log("numPages: ", numPages);
 
       if (page < numPages) {
         console.log("Pages are equal")

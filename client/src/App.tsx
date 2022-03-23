@@ -4,6 +4,8 @@ import axios from 'axios';
 import {useState, useEffect} from 'react';
 import Comment from './components/Comment'
 
+import './App.css'
+
 
 import dotenv from 'dotenv';
 
@@ -43,6 +45,8 @@ function App() {
 
   const [sortItem, setSortItem] = useState<string>('');
   const [sortDir, setSortDir] = useState<string>('ASC');
+  const [query, setQuery] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const handleNextClick = () => {
     console.log("Next");
@@ -82,16 +86,20 @@ function App() {
 
   }
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearch = event.target.value.toString();
+    setQuery(newSearch);
+  }
+
   useEffect(() => {
+
+    const searchTimeout = setTimeout(() => setSearchValue(query), 500);
+
+
     const makeGetRequest = async () => {
       setLoading(true);
       let queryString = '';
-      if(sortItem !== ''){
-        queryString =`/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}`;
-      }
-      else{
-        queryString = `/comments?page=${page}&limit=${limit}`;        
-      }
+        queryString = `http://localhost:5001/comments?page=${page}&limit=${limit}&sortTerm=${sortItem}&sortDir=${sortDir}&search=${searchValue}`;        
       let res = await axios.get(queryString)
       console.log("Query: ", queryString);
       let data = res.data;
@@ -99,20 +107,25 @@ function App() {
       setSavedComments(data);
       setLoading(false);
     }
-    makeGetRequest();
-  }, [page, limit, sortItem, sortDir]);
+    const apiTimeout = setTimeout(makeGetRequest, 700);
+
+      return () => {
+
+        clearTimeout(apiTimeout);        
+        clearTimeout(searchTimeout);
+      }
+  }, [page, limit, sortItem, sortDir, query, searchValue]);
 
 
   return (
     <div className="App">
       <header className="text-center bg-gray-200 lg:fixed top-0 right-0 left-0 shadow p-2 bg-white">
-        <h2>SaverBot Collection</h2>
 
 
         <div className="controls flex p-3 justify-between items-center">
 
-        <div className="border">
-          <select onChange={handleLimit}>
+        <div className="max-w-sm w-full ">
+          <select className="px-3 border" onChange={handleLimit}>
           <option value="5">Number of Results</option>
           <option value="5">5</option>
           <option value="10">10</option>
@@ -121,7 +134,10 @@ function App() {
           </select>
         </div>
 
-        <div className="flex">
+        <input  className="border px-3 py-2 max-w-md w-full placeholder-current" onChange={handleSearch} value={query} placeholder="Search Records"/>
+        
+
+        <div className="flex  max-w-sm w-full ">
             Sort Criteria:
             <div>
             <span className="border inline-block mx-2">
@@ -150,15 +166,18 @@ function App() {
 
 
 
-        <main className="pt-8 lg:pt-32 max-w-3xl mx-auto">
+        <main className="pt-8 pb-4 lg:pt-32 max-w-3xl mx-auto">
+
+                <h1 className="text-center">SaverBot Collection</h1>
+
 
       { loading === true ? null : Object.entries(JSON.parse(savedComments.results)).map((d:Array<any>, i) => {
         return <Comment key={d[1].id} id={d[1].id} comment={d[1].comment} timestamp={d[1].date} user={d[1].user}/>;
       })
       }
 
-      <div className="bottom-controls flex justify-between">{savedComments.previous ? <button  onClick={handlePrevClick}>Prev</button> : null}
-            {savedComments.next ? <button onClick={handleNextClick}>Next</button> : null}</div>
+      <div className="bottom-controls flex justify-between">{savedComments.previous ? <button className="button" onClick={handlePrevClick}>Prev</button> : <span></span>}
+            {savedComments.next ? <button  className="button" onClick={handleNextClick}>Next</button> : <span></span>}</div>
       </main>
 
 
